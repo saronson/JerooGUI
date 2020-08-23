@@ -12,11 +12,15 @@ public abstract class JerooBase implements Directions{
     private int x = 0;
     private int y = 0;
     private int ops = 0;
+    public static boolean showSteps = true;
 
     public JerooBase() {
         // New jeroos must be added to the map.
         Map.getInstance().addJeroo((Jeroo)this);
         Map.getInstance().saveMap();
+        if (showSteps) 
+            Map.getInstance().printMap();
+
     }
 
     public JerooBase(int flowers) {
@@ -87,6 +91,8 @@ public abstract class JerooBase implements Directions{
             if (map.isClear(tempX, tempY) || map.isFlower(tempX, tempY)) {
                 x = tempX;
                 y = tempY;
+                if (showSteps) 
+                    Map.getInstance().printMap();
 
             } else {
                 if (map.isNet(tempX, tempY)) {
@@ -96,6 +102,7 @@ public abstract class JerooBase implements Directions{
                 }
             }
             map.saveMap();
+
         } else {
             throw new Error("Jeroo drowned in water!");
         }
@@ -112,6 +119,9 @@ public abstract class JerooBase implements Directions{
         if (isFlower(HERE)) {
             flowers++;
             Map.getInstance().clearSpace(x, y);
+            if (showSteps) 
+                Map.getInstance().printMap();
+
         }
     }
 
@@ -120,6 +130,9 @@ public abstract class JerooBase implements Directions{
         if (flowers > 0) {
             flowers--;
             Map.getInstance().placeFlower(x, y);
+            if (showSteps) 
+                Map.getInstance().printMap();
+
         }
     }
 
@@ -134,6 +147,9 @@ public abstract class JerooBase implements Directions{
             } else {
                 Map.getInstance().saveMap();
             }
+            if (showSteps) 
+                Map.getInstance().printMap();
+
         }
     }
 
@@ -174,6 +190,9 @@ public abstract class JerooBase implements Directions{
             }
         }
         Map.getInstance().saveMap();
+        if (showSteps) 
+            Map.getInstance().printMap();
+
     }
 
     // "Boolean methods" return either of the boolean values true or false.
@@ -273,5 +292,25 @@ public abstract class JerooBase implements Directions{
 
     public void resetOps() {
         ops = 0;
+    }
+
+    public char getMapChar() {
+        if (direction == NORTH) {
+            return '^';
+        } else if (direction == EAST) {
+            return '>';
+        } else if (direction == SOUTH) {
+            return 'v';
+        } else if (direction == WEST) {
+            return '<';
+        } else 
+            return '?';
+    }
+    
+    /**
+     * set to true if you want to see print the map after each operation
+     */
+    public static void setShowSteps(boolean val) {
+        showSteps = val;
     }
 }

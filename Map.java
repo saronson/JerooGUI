@@ -118,7 +118,7 @@ public class Map {
             }
         }
         for(Jeroo j:jeroos){
-            tempMap[j.getY()][j.getX()] = 'J';
+            tempMap[j.getY()][j.getX()] = j.getMapChar();
         }
         for(int i=0; i<map.length; i++){
             for(int j=0; j<map[i].length; j++){
@@ -126,6 +126,7 @@ public class Map {
             }
             System.out.println("");
         }
+        System.out.println();
     }
 
     public void clearSpace(int x, int y) {
