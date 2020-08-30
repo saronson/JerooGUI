@@ -10,7 +10,7 @@ public class JerooState implements Directions {
     private int y;
     private CompassDirection direction;
 
-    public JerooState(int x, int y, CompassDirection direction, int flowers){
+    public JerooState(int y, int x, CompassDirection direction, int flowers){
         this.x = x;
         this.y = y;
         this.direction = direction;

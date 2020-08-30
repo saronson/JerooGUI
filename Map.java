@@ -100,8 +100,8 @@ public class Map {
         return instance;
     }
 
-    public void saveMap(int x, int y, char oldItem, char newItem) {
-        MapState mapState = new MapState(jeroos, x, y, oldItem, newItem);
+    public void saveMap(int y, int x, char oldItem, char newItem) {
+        MapState mapState = new MapState(jeroos, y, x, oldItem, newItem);
         history.add(mapState);
     }
 
@@ -129,21 +129,21 @@ public class Map {
         System.out.println();
     }
 
-    public void clearSpace(int x, int y) {
-        saveMap(x, y, map[y][x], '.');
+    public void clearSpace(int y, int x) {
+        saveMap(y, x, map[y][x], '.');
         map[y][x] = '.';
     }
 
-    public void placeFlower(int x, int y) {
-        saveMap(x, y, map[y][x], 'F');
+    public void placeFlower(int y, int x) {
+        saveMap(y, x, map[y][x], 'F');
         map[y][x] = 'F';
     }
 
-    public boolean isFlower(int x, int y) {
+    public boolean isFlower(int y, int x) {
         return map[y][x] == 'F';
     }
 
-    public boolean isJeroo(int x, int y) {
+    public boolean isJeroo(int y, int x) {
         for (Jeroo j : jeroos) {
             if (j.getX() == x && j.getY() == y) {
                 return true;
@@ -152,7 +152,7 @@ public class Map {
         return false;
     }
 
-    public boolean isAnotherJeroo(int x, int y) {
+    public boolean isAnotherJeroo(int y, int x) {
         int count = 0;
         for (Jeroo j : jeroos) {
             if (j.getX() == x && j.getY() == y) {
@@ -165,7 +165,7 @@ public class Map {
         return true;
     }
 
-    public Jeroo getJerooAt(int x, int y) {
+    public Jeroo getJerooAt(int y, int x) {
         for (Jeroo j : jeroos) {
             if (j.getX() == x && j.getY() == y) {
                 return j;
@@ -174,16 +174,16 @@ public class Map {
         return null;
     }
 
-    public boolean isNet(int x, int y) {
+    public boolean isNet(int y, int x) {
         return map[y][x] == 'N';
     }
 
-    public boolean isClear(int x, int y) {
+    public boolean isClear(int y, int x) {
 
-        return !isJeroo(x, y) && map[y][x] == '.';
+        return !isJeroo(y, x) && map[y][x] == '.';
     }
 
-    public boolean isWater(int x, int y) {
+    public boolean isWater(int y, int x) {
         return map[y][x] == 'W';
     }
 }

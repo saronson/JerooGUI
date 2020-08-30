@@ -28,27 +28,27 @@ public abstract class JerooBase implements Directions{
         this.flowers = flowers;
     }
 
-    public JerooBase(int x, int y) {
+    public JerooBase(int y, int x) {
         this();
         this.x = x;
         this.y = y;
     }
 
-    public JerooBase(int x, int y, CompassDirection direction) {
+    public JerooBase(int y, int x, CompassDirection direction) {
         this();
         this.x = x;
         this.y = y;
         this.direction = direction;
     }
 
-    public JerooBase(int x, int y, int flowers) {
+    public JerooBase(int y, int x, int flowers) {
         this();
         this.x = x;
         this.y = y;
         this.flowers = flowers;
     }
 
-    public JerooBase(int x, int y, CompassDirection direction, int flowers) {
+    public JerooBase(int y, int x, CompassDirection direction, int flowers) {
         this();
         this.x = x;
         this.y = y;
@@ -87,17 +87,17 @@ public abstract class JerooBase implements Directions{
         int tempX = JerooHelper.findXRelative(AHEAD, direction, x);
         int tempY = JerooHelper.findYRelative(AHEAD, direction, y);
         Map map = Map.getInstance();
-        if (JerooHelper.coordsInBounds(tempX, tempY)){
-            if (map.isClear(tempX, tempY) || map.isFlower(tempX, tempY)) {
+        if (JerooHelper.coordsInBounds(tempY, tempX)){
+            if (map.isClear(tempY, tempX) || map.isFlower(tempY, tempX)) {
                 x = tempX;
                 y = tempY;
                 if (showSteps) 
                     Map.getInstance().printMap();
 
             } else {
-                if (map.isNet(tempX, tempY)) {
+                if (map.isNet(tempY, tempX)) {
                     throw new Error("Jeroo trapped in net!");
-                } else if (map.isWater(tempX, tempY)) {
+                } else if (map.isWater(tempY, tempX)) {
                     throw new Error("Jeroo drowned in water!");
                 }
             }
@@ -118,7 +118,7 @@ public abstract class JerooBase implements Directions{
         ops++;
         if (isFlower(HERE)) {
             flowers++;
-            Map.getInstance().clearSpace(x, y);
+            Map.getInstance().clearSpace(y, x);
             if (showSteps) 
                 Map.getInstance().printMap();
 
@@ -129,7 +129,7 @@ public abstract class JerooBase implements Directions{
         ops++;
         if (flowers > 0) {
             flowers--;
-            Map.getInstance().placeFlower(x, y);
+            Map.getInstance().placeFlower(y, x);
             if (showSteps) 
                 Map.getInstance().printMap();
 
@@ -142,8 +142,8 @@ public abstract class JerooBase implements Directions{
             flowers--;
             int tempX = JerooHelper.findXRelative(AHEAD, direction, x);
             int tempY = JerooHelper.findYRelative(AHEAD, direction, y);
-            if (JerooHelper.coordsInBounds(tempX, tempY) && Map.getInstance().isNet(tempX, tempY)) {
-                Map.getInstance().clearSpace(tempX, tempY);
+            if (JerooHelper.coordsInBounds(tempY, tempX) && Map.getInstance().isNet(tempY, tempX)) {
+                Map.getInstance().clearSpace(tempY, tempX);
             } else {
                 Map.getInstance().saveMap();
             }
@@ -158,9 +158,9 @@ public abstract class JerooBase implements Directions{
         if (flowers > 0) {
             int tempX = JerooHelper.findXRelative(relDir, direction, x);
             int tempY = JerooHelper.findYRelative(relDir, direction, y);
-            if (JerooHelper.coordsInBounds(tempX, tempY) && Map.getInstance().isJeroo(tempX, tempY)) {
+            if (JerooHelper.coordsInBounds(tempY, tempX) && Map.getInstance().isJeroo(tempY, tempX)) {
                 flowers--;
-                Map.getInstance().getJerooAt(tempX, tempY).recieveFlower();
+                Map.getInstance().getJerooAt(tempY, tempX).recieveFlower();
                 Map.getInstance().saveMap();
             }
         }
@@ -207,8 +207,8 @@ public abstract class JerooBase implements Directions{
     public boolean isFlower(RelativeDirection relDir) {
         int tempX = JerooHelper.findXRelative(relDir, direction, x);
         int tempY = JerooHelper.findYRelative(relDir, direction, y);
-        if (JerooHelper.coordsInBounds(tempX, tempY)) {
-            return Map.getInstance().isFlower(tempX, tempY);
+        if (JerooHelper.coordsInBounds(tempY, tempX)) {
+            return Map.getInstance().isFlower(tempY, tempX);
         }
         return false;
     }
@@ -216,8 +216,8 @@ public abstract class JerooBase implements Directions{
     public boolean isJeroo(RelativeDirection relDir) {
         int tempX = JerooHelper.findXRelative(relDir, direction, x);
         int tempY = JerooHelper.findYRelative(relDir, direction, y);
-        if (JerooHelper.coordsInBounds(tempX, tempY)) {
-            return Map.getInstance().isJeroo(tempX, tempY);
+        if (JerooHelper.coordsInBounds(tempY, tempX)) {
+            return Map.getInstance().isJeroo(tempY, tempX);
         }
         return false;
     }
@@ -225,8 +225,8 @@ public abstract class JerooBase implements Directions{
     public boolean isNet(RelativeDirection relDir) {
         int tempX = JerooHelper.findXRelative(relDir, direction, x);
         int tempY = JerooHelper.findYRelative(relDir, direction, y);
-        if (JerooHelper.coordsInBounds(tempX, tempY)) {
-            return Map.getInstance().isNet(tempX, tempY);
+        if (JerooHelper.coordsInBounds(tempY, tempX)) {
+            return Map.getInstance().isNet(tempY, tempX);
         }
         return false;
     }
@@ -234,8 +234,8 @@ public abstract class JerooBase implements Directions{
     public boolean isWater(RelativeDirection relDir) {
         int tempX = JerooHelper.findXRelative(relDir, direction, x);
         int tempY = JerooHelper.findYRelative(relDir, direction, y);
-        if (JerooHelper.coordsInBounds(tempX, tempY)) {
-            return Map.getInstance().isWater(tempX, tempY);
+        if (JerooHelper.coordsInBounds(tempY, tempX)) {
+            return Map.getInstance().isWater(tempY, tempX);
         }
         return false;
     }
@@ -243,8 +243,8 @@ public abstract class JerooBase implements Directions{
     public boolean isClear(RelativeDirection relDir) {
         int tempX = JerooHelper.findXRelative(relDir, direction, x);
         int tempY = JerooHelper.findYRelative(relDir, direction, y);
-        if (JerooHelper.coordsInBounds(tempX, tempY)) {
-            return Map.getInstance().isClear(tempX, tempY);
+        if (JerooHelper.coordsInBounds(tempY, tempX)) {
+            return Map.getInstance().isClear(tempY, tempX);
         }
         return false;
     }

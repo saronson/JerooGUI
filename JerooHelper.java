@@ -5,7 +5,7 @@
  */
 public class JerooHelper implements Directions {
 
-    public static boolean coordsInBounds(int x, int y) {
+    public static boolean coordsInBounds(int y, int x) {
         return x >= 0 && x < Map.getColumns() && y >= 0 && y < Map.getRows();
     }
 
