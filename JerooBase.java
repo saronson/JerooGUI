@@ -15,45 +15,40 @@ public abstract class JerooBase implements Directions{
     public static boolean showSteps = true;
 
     public JerooBase() {
+        this(0, 0, EAST, 0);
+
+    }
+
+    public JerooBase(int flowers) {
+        this(0, 0, EAST, flowers);
+
+    }
+
+    public JerooBase(int y, int x) {
+        this(y, x, EAST, 0);
+    }
+
+    public JerooBase(int y, int x, CompassDirection direction) {
+        this(y, x, direction, 0);
+
+    }
+
+    public JerooBase(int y, int x, int flowers) {
+        this(y, x, EAST, flowers);
+
+    }
+
+    public JerooBase(int y, int x, CompassDirection direction, int flowers) {
+        this.x = x;
+        this.y = y;
+        this.direction = direction;
+        this.flowers = flowers;
+
         // New jeroos must be added to the map.
         Map.getInstance().addJeroo((Jeroo)this);
         Map.getInstance().saveMap();
         if (showSteps) 
             Map.getInstance().printMap();
-
-    }
-
-    public JerooBase(int flowers) {
-        this();
-        this.flowers = flowers;
-    }
-
-    public JerooBase(int y, int x) {
-        this();
-        this.x = x;
-        this.y = y;
-    }
-
-    public JerooBase(int y, int x, CompassDirection direction) {
-        this();
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
-    }
-
-    public JerooBase(int y, int x, int flowers) {
-        this();
-        this.x = x;
-        this.y = y;
-        this.flowers = flowers;
-    }
-
-    public JerooBase(int y, int x, CompassDirection direction, int flowers) {
-        this();
-        this.x = x;
-        this.y = y;
-        this.direction = direction;
-        this.flowers = flowers;
     }
 
     // "Getter" methods for private jeroo instance variables
@@ -306,7 +301,7 @@ public abstract class JerooBase implements Directions{
         } else 
             return '?';
     }
-    
+
     /**
      * set to true if you want to see print the map after each operation
      */
