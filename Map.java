@@ -79,17 +79,26 @@ public class Map {
         try {
             Scanner sc = new Scanner(new File(filename));
             String stringMap = "";
-            char[][] tempMap = new char[DEFAULT_HEIGHT][DEFAULT_WIDTH];
+            int height = 0;
+            int width = -1;
 
             // Read in each line of the map from the map file
             while (sc.hasNextLine()) {
-                stringMap += sc.nextLine();
+                String temp = sc.nextLine().trim();
+                if (temp.length() > 0) {
+                    stringMap += temp;
+                    if (width == -1)
+                        width = stringMap.length();
+                    height++;
+                }
             }
 
+            char[][] tempMap = new char[height][width];
+
             // Transfer data from the String to the char map
-            for (int i = 0; i < DEFAULT_HEIGHT; i++) {
-                for (int j = 0; j < DEFAULT_WIDTH; j++) {
-                    tempMap[i][j] = stringMap.charAt(i * DEFAULT_WIDTH + j);
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    tempMap[i][j] = stringMap.charAt(i * width + j);
                 }
             }
             map = tempMap;
