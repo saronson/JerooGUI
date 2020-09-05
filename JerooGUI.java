@@ -166,13 +166,59 @@ public class JerooGUI implements KeyListener {
         }
     }
 
+    public void gotoEnd() {
+        if (counter < Map.getInstance().getHistoryLength() - 1) {
+            MapState newState = null;
+            while (counter < Map.getInstance().getHistoryLength()-1) {
+                counter++;
+                newState = Map.getInstance().getHistory(counter);
+                if (newState.getX() >= 0) {
+                    int x = newState.getX();
+                    int y = newState.getY();
+                    char newItem = newState.getNewItem();
+                    map[y][x] = newItem;
+                }
+            }
+            updateMap();
+            if (newState != null) {
+                ArrayList<JerooState> jeroos = newState.getJerooState();
+
+                showArrows(jeroos);
+            }
+        }
+    }
+
+    public void gotoStart() {
+        if (counter > 0) {
+            while (counter > 0) {
+                MapState currentState = Map.getInstance().getHistory(counter);
+                counter--;
+                if (currentState.getX() >= 0) {
+                    int x = currentState.getX();
+                    int y = currentState.getY();
+                    char oldItem = currentState.getOldItem();
+                    map[y][x] = oldItem;
+                }
+            }
+            updateMap();
+            ArrayList<JerooState> jeroos = Map.getInstance().getHistory(counter).getJerooState();
+
+            showArrows(jeroos);
+        }
+    }
+
     @Override
     public void keyReleased(KeyEvent e) {
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+        if (e.getKeyChar() == 's' || e.getKeyCode() == KeyEvent.VK_LEFT && e.isShiftDown() ) {
+            gotoStart();
+        } else if (e.getKeyChar() == 'e' || e.getKeyCode() == KeyEvent.VK_RIGHT && e.isShiftDown()) {
+            gotoEnd();
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT ) {
             stepBackwards();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             stepForwards();
