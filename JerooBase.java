@@ -232,7 +232,7 @@ public abstract class JerooBase implements Directions{
         if (JerooHelper.coordsInBounds(tempY, tempX)) {
             return Map.getInstance().isWater(tempY, tempX);
         }
-        return false;
+        return true;
     }
 
     public boolean isClear(RelativeDirection relDir) {
