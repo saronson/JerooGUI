@@ -30,17 +30,20 @@ public class Map {
         initialize();
     }
 
-    private void initialize() {
+    public void initialize() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 map[i][j] = '.';
             }
         }
+        history = new ArrayList<MapState>();
+        jeroos = new ArrayList<>();
     }
 
     public void changeSize(int rows, int columns) {
         map = new char[rows][columns];
         initialize();
+        
     }
 
     static public int getRows() {
