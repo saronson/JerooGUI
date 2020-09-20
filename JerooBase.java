@@ -94,6 +94,8 @@ public abstract class JerooBase implements Directions{
                     throw new Error("Jeroo trapped in net!");
                 } else if (map.isWater(tempY, tempX)) {
                     throw new Error("Jeroo drowned in water!");
+                } else if (map.isJeroo(tempY, tempX)) {
+                    throw new Error("Jeroo has collided with another jeroo!");
                 }
             }
             map.saveMap();
