@@ -1,2 +1,2 @@
-language = "java"
-run = "javac *.java; java Main"
+language = "java_swing"
+run = "rm Main.class;rm Jeroo.class;javac *.java; java Main"
