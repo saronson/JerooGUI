@@ -36,6 +36,8 @@ public class Map {
                 map[i][j] = '.';
             }
         }
+        history = new ArrayList<MapState>();
+        jeroos = new ArrayList<>();
     }
 
     public void changeSize(int rows, int columns) {
