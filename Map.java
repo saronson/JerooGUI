@@ -30,20 +30,17 @@ public class Map {
         initialize();
     }
 
-    public void initialize() {
+    private void initialize() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 map[i][j] = '.';
             }
         }
-        history = new ArrayList<MapState>();
-        jeroos = new ArrayList<>();
     }
 
     public void changeSize(int rows, int columns) {
         map = new char[rows][columns];
         initialize();
-        
     }
 
     static public int getRows() {
@@ -56,6 +53,10 @@ public class Map {
 
     public void addJeroo(Jeroo j) {
         jeroos.add(j);
+    }
+    
+    public void removeJeroo(Jeroo j) {
+        jeroos.remove(j);
     }
 
     public ArrayList<Jeroo> getJeroos() {
