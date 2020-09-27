@@ -12,13 +12,14 @@ public class MapState {
 
     public MapState(ArrayList<Jeroo> jeroos){
         for (Jeroo j : jeroos) {
-            jerooState.add(new JerooState(j.getY(), j.getX(), j.getDirection(), j.getFlowers()));
+            
+            jerooState.add(new JerooState(j.getY(), j.getX(), j.getDirection(), j.getFlowers(), j.getImage()));
         }
     }
     
     public MapState(ArrayList<Jeroo> jeroos, int y, int x, char oldItem, char newItem) {
         for (Jeroo j : jeroos) {
-            jerooState.add(new JerooState(j.getY(), j.getX(), j.getDirection(), j.getFlowers()));
+            jerooState.add(new JerooState(j.getY(), j.getX(), j.getDirection(), j.getFlowers(), j.getImage()));
         }
         this.x = x;
         this.y = y;
