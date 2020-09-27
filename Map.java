@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Map {
+public class Map implements Directions {
     // the size of the map grid
     public static final int DEFAULT_WIDTH = 24;
     public static final int DEFAULT_HEIGHT = 24;
@@ -38,6 +38,7 @@ public class Map {
         }
         history = new ArrayList<MapState>();
         jeroos = new ArrayList<>();
+        saveMap();
     }
 
     public void changeSize(int rows, int columns) {
@@ -55,10 +56,12 @@ public class Map {
 
     public void addJeroo(Jeroo j) {
         jeroos.add(j);
+        saveMap();
     }
-    
+
     public void removeJeroo(Jeroo j) {
         jeroos.remove(j);
+        saveMap();
     }
 
     public ArrayList<Jeroo> getJeroos() {
@@ -133,7 +136,7 @@ public class Map {
             }
         }
         for(Jeroo j:jeroos){
-            tempMap[j.getY()][j.getX()] = j.getMapChar();
+            tempMap[j.getY()][j.getX()] = getMapChar(j);
         }
         for(int i=0; i<map.length; i++){
             for(int j=0; j<map[i].length; j++){
@@ -200,5 +203,19 @@ public class Map {
 
     public boolean isWater(int y, int x) {
         return map[y][x] == 'W';
+    }
+
+    public char getMapChar(Jeroo j) {
+        CompassDirection direction = j.getDirection();
+        if (direction == NORTH) {
+            return '^';
+        } else if (direction == EAST) {
+            return '>';
+        } else if (direction == SOUTH) {
+            return 'v';
+        } else if (direction == WEST) {
+            return '<';
+        } else 
+            return '?';
     }
 }

@@ -114,12 +114,15 @@ public class JerooGUI implements KeyListener {
              */
 
             JLabel b = new JLabel(temp, JLabel.CENTER);
+            /*
             switch (j.getDirection()) {
-                case NORTH  : b.setIcon(new ImageIcon("images/Jeroo_0_North14.gif")); break;
-                case EAST   : b.setIcon(new ImageIcon("images/Jeroo_0_East14.gif")); break;
-                case SOUTH  : b.setIcon(new ImageIcon("images/Jeroo_0_South14.gif")); break;
-                case WEST   : b.setIcon(new ImageIcon("images/Jeroo_0_West14.gif")); break;
-            }
+                case NORTH  : b.setIcon(new ImageIcon(j.getNorthImage())); break;
+                case EAST   : b.setIcon(new ImageIcon(j.getEastImage())); break;
+                case SOUTH  : b.setIcon(new ImageIcon(j.getSouthImage())); break;
+                case WEST   : b.setIcon(new ImageIcon(j.getWestImage())); break;
+            }*/
+            String temp2 = j.getImage();
+            b.setIcon(new ImageIcon(j.getImage()));
             b.setVerticalAlignment(JLabel.CENTER);
 
             // b.setFont(new Font(b.getFont().getName(), Font.BOLD, (int)(b.getFont().getSize())));

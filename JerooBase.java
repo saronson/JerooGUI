@@ -1,4 +1,3 @@
-
 /**
  * The JerooBase class defines the basic state and behavior of all Jeroos.
  *
@@ -12,16 +11,21 @@ public abstract class JerooBase implements Directions{
     private int x = 0;
     private int y = 0;
     private int ops = 0;
-    public static boolean showSteps = true;
+    public static boolean showSteps = false;
+    private static int imageNum = 0;
+    private boolean isCustomImage = false;
+    private String northImage = "images/Jeroo_0_North14.gif";
+    private String eastImage = "images/Jeroo_0_East14.gif";
+    private String southImage ="images/Jeroo_0_South14.gif";
+    private String westImage = "images/Jeroo_0_West14.gif";
+    private boolean showMovement = true;
 
     public JerooBase() {
         this(0, 0, EAST, 0);
-
     }
 
     public JerooBase(int flowers) {
         this(0, 0, EAST, flowers);
-
     }
 
     public JerooBase(int y, int x) {
@@ -30,49 +34,40 @@ public abstract class JerooBase implements Directions{
 
     public JerooBase(int y, int x, CompassDirection direction) {
         this(y, x, direction, 0);
-
     }
 
     public JerooBase(int y, int x, int flowers) {
         this(y, x, EAST, flowers);
-
     }
 
     public JerooBase(int y, int x, CompassDirection direction, int flowers) {
+        this(y, x, direction, flowers, 
+            "images/Jeroo_" + imageNum + "_North14.gif",
+            "images/Jeroo_" + imageNum + "_East14.gif",
+            "images/Jeroo_" + imageNum + "_South14.gif",
+            "images/Jeroo_" + imageNum + "_West14.gif");
+
+        imageNum++;
+        imageNum = imageNum % 4;
+
+    }
+
+    public JerooBase(int y, int x, CompassDirection direction, int flowers, String northImage, String eastImage, String southImage, String westImage) 
+    {
         this.x = x;
         this.y = y;
         this.direction = direction;
         this.flowers = flowers;
+        this.northImage = northImage;
+        this.eastImage = eastImage;
+        this.southImage = southImage;
+        this.westImage = westImage;
 
         // New jeroos must be added to the map.
         Map.getInstance().addJeroo((Jeroo)this);
-        Map.getInstance().saveMap();
+
         if (showSteps) 
             Map.getInstance().printMap();
-    }
-
-    // "Getter" methods for private jeroo instance variables
-    // Note: These were NOT part of the original Jeroo API
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public CompassDirection getDirection() {
-        return direction;
-    }
-
-    public int getFlowers() {
-        return flowers;
-    }
-
-    // The map needs to be able to increase a jeroo's flowers if another
-    // jeroo gave it a flower.
-    public void recieveFlower() {
-        flowers++;
     }
 
     // "Action methods" for making a jeroo DO things. Notice these methods have
@@ -88,7 +83,8 @@ public abstract class JerooBase implements Directions{
                 y = tempY;
                 if (showSteps) 
                     Map.getInstance().printMap();
-
+                if (showMovement)
+                    map.saveMap();
             } else {
                 if (map.isNet(tempY, tempX)) {
                     throw new Error("Jeroo trapped in net!");
@@ -98,7 +94,6 @@ public abstract class JerooBase implements Directions{
                     throw new Error("Jeroo has collided with another jeroo!");
                 }
             }
-            map.saveMap();
 
         } else {
             throw new Error("Jeroo drowned in water!");
@@ -141,7 +136,6 @@ public abstract class JerooBase implements Directions{
             int tempY = JerooHelper.findYRelative(AHEAD, direction, y);
             if (JerooHelper.coordsInBounds(tempY, tempX) && Map.getInstance().isNet(tempY, tempX)) {
                 Map.getInstance().clearSpace(tempY, tempX);
-            } else {
                 Map.getInstance().saveMap();
             }
             if (showSteps) 
@@ -157,7 +151,7 @@ public abstract class JerooBase implements Directions{
             int tempY = JerooHelper.findYRelative(relDir, direction, y);
             if (JerooHelper.coordsInBounds(tempY, tempX) && Map.getInstance().isJeroo(tempY, tempX)) {
                 flowers--;
-                Map.getInstance().getJerooAt(tempY, tempX).recieveFlower();
+                Map.getInstance().getJerooAt(tempY, tempX).receiveFlower();
                 Map.getInstance().saveMap();
             }
         }
@@ -186,7 +180,8 @@ public abstract class JerooBase implements Directions{
                 direction = SOUTH;
             }
         }
-        Map.getInstance().saveMap();
+        if (showMovement)
+            Map.getInstance().saveMap();
         if (showSteps) 
             Map.getInstance().printMap();
 
@@ -246,41 +241,12 @@ public abstract class JerooBase implements Directions{
         return false;
     }
 
-    public void getFlowerNearby() {
-        if (isFlower(HERE) || isFlower(AHEAD) || isFlower(LEFT) || isFlower(RIGHT)) {
-            if (isFlower(LEFT)) {
-                turn(LEFT);
-            } else if (isFlower(RIGHT)) {
-                turn(RIGHT);
-            }
-            hop();
-            pick();
-        }
-    }
-
-    // The logic here is surprisingly simple:
-    //   - go right whenever possible
-    //   - go straight if possible when right is unavailable
-    //   - turn left if that's the only option, otherwise turn around
-    // NOTE: This will only work on a maze with single-width "hallways" and no loops
-    public void moveTendingRight() {
-        getFlowerNearby();
-        if (isClear(RIGHT)) {
-            turn(RIGHT);
-        } else {
-            if (isClear(AHEAD)) {
-            } // no need to turn...
-            else {
-                if (isClear(LEFT)) {
-                    turn(LEFT);
-                } else {
-                    turn(RIGHT);
-                    turn(RIGHT);
-                }
-            }
-        }
-
-        hop();
+    //  Methods that don't work on Jeroo.org
+    /**
+     * set to true if you want to see print the map after each operation
+     */
+    public static void setShowSteps(boolean val) {
+        showSteps = val;
     }
 
     public int getOps() {
@@ -291,23 +257,78 @@ public abstract class JerooBase implements Directions{
         ops = 0;
     }
 
-    public char getMapChar() {
-        if (direction == NORTH) {
-            return '^';
-        } else if (direction == EAST) {
-            return '>';
-        } else if (direction == SOUTH) {
-            return 'v';
-        } else if (direction == WEST) {
-            return '<';
-        } else 
-            return '?';
+    // "Getter" methods for private jeroo instance variables
+    // Note: These were NOT part of the original Jeroo API
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public CompassDirection getDirection() {
+        return direction;
+    }
+
+    public int getFlowers() {
+        return flowers;
+    }
+
+    // The map needs to be able to increase a jeroo's flowers if another
+    // jeroo gave it a flower.
+    public void receiveFlower() {
+        flowers++;
     }
 
     /**
-     * set to true if you want to see print the map after each operation
+     * remove the Jeroo from the map
      */
-    public static void setShowSteps(boolean val) {
-        showSteps = val;
+    public void remove() {
+        Map.getInstance().removeJeroo((Jeroo)this);
+        if (showSteps) 
+            Map.getInstance().printMap();
     }
+
+    /** 
+     * randomly return true or false
+     */
+    public boolean getRandom() {
+        int rand = (int)(Math.random()*2);
+        return rand == 1;
+    }
+
+    public String getImage() {
+        if (direction == NORTH) {
+            return northImage;
+        } else if (direction == EAST) {
+            return eastImage;
+        } else if (direction == SOUTH) {
+            return southImage;
+        } else if (direction == WEST) {
+            return westImage;
+        } else
+            return "Bad direction";
+    }
+
+    public void setImage(String north, String east, String south, String west) {
+        isCustomImage = true;
+        northImage = "images/" + north;
+        eastImage =  "images/" + east;
+        southImage = "images/" + south;
+        westImage =  "images/" + west;
+    }
+
+    public void showMovement() {
+        showMovement = true;
+    }
+
+    public void hideMovement() {
+        showMovement = false;
+    }
+
+    public boolean getshowMovement() {
+        return showMovement;
+    }
+
 }
