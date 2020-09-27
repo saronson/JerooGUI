@@ -81,10 +81,12 @@ public abstract class JerooBase implements Directions{
             if (map.isClear(tempY, tempX) || map.isFlower(tempY, tempX)) {
                 x = tempX;
                 y = tempY;
-                if (showSteps) 
-                    Map.getInstance().printMap();
-                if (showMovement)
+                if (showMovement) {
                     map.saveMap();
+                    if (showSteps) 
+                        Map.getInstance().printMap();
+
+                }
             } else {
                 if (map.isNet(tempY, tempX)) {
                     throw new Error("Jeroo trapped in net!");
@@ -327,7 +329,7 @@ public abstract class JerooBase implements Directions{
         showMovement = false;
     }
 
-    public boolean getshowMovement() {
+    public boolean getShowMovement() {
         return showMovement;
     }
 
