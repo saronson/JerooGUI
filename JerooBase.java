@@ -130,24 +130,25 @@ public abstract class JerooBase implements Directions{
         }
     }
 
-public void toss() {
-   ops++;
-   if (flowers > 0) {
-      flowers--;
-      int tempX = JerooHelper.findXRelative(AHEAD, direction, x);
-      int tempY = JerooHelper.findYRelative(AHEAD, direction, y);
-      if (JerooHelper.coordsInBounds(tempY, tempX)) {
-         if (Map.getInstance().isNet(tempY, tempX)) {
-            Map.getInstance().clearSpace(tempY, tempX);
-            Map.getInstance().saveMap();
-      } else {
-         Map.getInstance().placeFlower(tempY, tempX);
-      }
-   }
-   if (showSteps) 
-      Map.getInstance().printMap();
-   }
-}
+    public void toss() {
+        ops++;
+        if (flowers > 0) {
+            flowers--;
+            int tempX = JerooHelper.findXRelative(AHEAD, direction, x);
+            int tempY = JerooHelper.findYRelative(AHEAD, direction, y);
+            if (JerooHelper.coordsInBounds(tempY, tempX)) {
+                if (Map.getInstance().isNet(tempY, tempX)) {
+                    Map.getInstance().clearSpace(tempY, tempX);
+                    Map.getInstance().saveMap();
+                } else {
+                    Map.getInstance().placeFlower(tempY, tempX);
+                }
+            }
+            if (showSteps) 
+                Map.getInstance().printMap();
+        }
+    }
+
     public void give(RelativeDirection relDir) {
         ops++;
         if (flowers > 0) {
